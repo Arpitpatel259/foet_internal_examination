@@ -154,23 +154,24 @@ class _MemberPageState extends State<MemberPage> {
   // Widget to display data in a DataTable
   Widget _buildDataTable() {
     final Map<String, dynamic> data =
-        responseData.isNotEmpty ? jsonDecode(responseData) : {};
+        responseData.isNotEmpty ? jsonDecode(responseData.toString()) : {};
 
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text('Field'),
-        ),
-        DataColumn(
-          label: Text('Value'),
-        ),
-      ],
-      rows: data.entries.map((entry) {
-        return DataRow(cells: [
-          DataCell(Text(entry.key)),
-          DataCell(Text(entry.value.toString())),
-        ]);
-      }).toList(),
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        final key = data.keys.elementAt(index);
+        final value = data[key];
+
+        return ListTile(
+          title: Text(key),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: value.entries.map((entry) {
+              return Text('${entry.key}: ${entry.value}');
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 
@@ -375,12 +376,12 @@ class _MemberPageState extends State<MemberPage> {
     final url = Uri.parse('https://ciaapp.pythonanywhere.com/get_data');
     try {
       final response = await http.get(
-        Uri.parse('$url?EN_NO=$enrollment&sem=$semester'),
+        Uri.parse('$url?EN_NO=$enrollment&SEM=$semester'),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonData = json.decode(response.body.toString());
+        final Map<String, dynamic> jsonData = json.decode(response.body);
         setState(() {
-          responseData = json.encode(jsonData).toString();
+          responseData = json.encode(jsonData);
           debugPrint("Enrollment ---==" + responseData.toString());
         });
       } else {
