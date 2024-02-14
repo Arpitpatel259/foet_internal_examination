@@ -152,6 +152,29 @@ class _MemberPageState extends State<MemberPage> {
     );
   }
 
+  // Widget to display data in a DataTable
+  Widget _buildDataTable() {
+    final Map<String, dynamic> data =
+        responseData.isNotEmpty ? jsonDecode(responseData) : {};
+
+    return DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text('Field'),
+        ),
+        DataColumn(
+          label: Text('Value'),
+        ),
+      ],
+      rows: data.entries.map((entry) {
+        return DataRow(cells: [
+          DataCell(Text(entry.key)),
+          DataCell(Text(entry.value.toString())),
+        ]);
+      }).toList(),
+    );
+  }
+
   // Get and Clear Button in one ROW
   Widget _buildActionButtons() {
     return Row(
@@ -169,7 +192,9 @@ class _MemberPageState extends State<MemberPage> {
                     type.isNotEmpty &&
                     type != "none") {
                   // If form is valid, fetch data
-                  fetchDataWithBody(enrollmentController.text, type);
+                  fetchDataWithBody(enrollmentController.text.toUpperCase(), type.toUpperCase());
+                  debugPrint("Enrollment --------- " + enrollmentController.text);
+                  debugPrint("sem ---------------- " + type);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -346,40 +371,21 @@ class _MemberPageState extends State<MemberPage> {
     super.dispose();
   }
 
-  // Widget to display data in a DataTable
-  Widget _buildDataTable() {
-    final Map<String, dynamic> data =
-    responseData.isNotEmpty ? jsonDecode(responseData) : {};
-
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text('Field'),
-        ),
-        DataColumn(
-          label: Text('Value'),
-        ),
-      ],
-      rows: data.entries.map((entry) {
-        return DataRow(cells: [
-          DataCell(Text(entry.key)),
-          DataCell(Text(entry.value.toString())),
-        ]);
-      }).toList(),
-    );
-  }
-
   // Method to fetch data from the API
   Future<void> fetchDataWithBody(String enrollment, String semester) async {
-    final url = Uri.parse('https://ciaapp.pythonanywhere.com/get_data?EN_NO=$enrollment&sem=$semester');
+    final url = Uri.parse('https://ciaapp.pythonanywhere.com/get_data');
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        Uri.parse('$url?EN_NO=$enrollment&sem=$semester'),
+      );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonData = json.decode(response.body);
+        final Map<String, dynamic> jsonData = json.decode(response.body.toString());
         setState(() {
           responseData = json.encode(jsonData).toString();
+          debugPrint("Enrollment ---==" + responseData.toString());
         });
       } else {
+        // Handle non-200 status code
         debugPrint('Failed to fetch data: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -399,5 +405,4 @@ class _MemberPageState extends State<MemberPage> {
       );
     }
   }
-
 }
