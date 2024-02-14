@@ -152,29 +152,6 @@ class _MemberPageState extends State<MemberPage> {
     );
   }
 
-  // Widget to display data in a DataTable
-  Widget _buildDataTable() {
-    final Map<String, dynamic> data =
-        responseData.isNotEmpty ? jsonDecode(responseData) : {};
-
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text('Field'),
-        ),
-        DataColumn(
-          label: Text('Value'),
-        ),
-      ],
-      rows: data.entries.map((entry) {
-        return DataRow(cells: [
-          DataCell(Text(entry.key)),
-          DataCell(Text(entry.value.toString())),
-        ]);
-      }).toList(),
-    );
-  }
-
   // Get and Clear Button in one ROW
   Widget _buildActionButtons() {
     return Row(
@@ -369,6 +346,29 @@ class _MemberPageState extends State<MemberPage> {
     super.dispose();
   }
 
+  // Widget to display data in a DataTable
+  Widget _buildDataTable() {
+    final Map<String, dynamic> data =
+    responseData.isNotEmpty ? jsonDecode(responseData) : {};
+
+    return DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text('Field'),
+        ),
+        DataColumn(
+          label: Text('Value'),
+        ),
+      ],
+      rows: data.entries.map((entry) {
+        return DataRow(cells: [
+          DataCell(Text(entry.key)),
+          DataCell(Text(entry.value.toString())),
+        ]);
+      }).toList(),
+    );
+  }
+
   // Method to fetch data from the API
   Future<void> fetchDataWithBody(String enrollment, String semester) async {
     final url = Uri.parse('https://ciaapp.pythonanywhere.com/get_data?EN_NO=$enrollment&sem=$semester');
@@ -377,7 +377,7 @@ class _MemberPageState extends State<MemberPage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
         setState(() {
-          responseData = json.encode(jsonData);
+          responseData = json.encode(jsonData).toString();
         });
       } else {
         debugPrint('Failed to fetch data: ${response.statusCode}');
