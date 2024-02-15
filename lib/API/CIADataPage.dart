@@ -17,8 +17,6 @@ class CIADataPage extends StatefulWidget {
 class _CIADataPageState extends State<CIADataPage> {
   Map<String, dynamic> ciaData = {};
 
-  get jsonData => null;
-
   Future<void> fetchData() async {
     final response = await http.get(Uri.parse(
         'https://ciaapp.pythonanywhere.com/get_data/${widget.enrollmentNumber}/${widget.type}'));
@@ -26,6 +24,7 @@ class _CIADataPageState extends State<CIADataPage> {
     if (response.statusCode == 200) {
       final jsonString = response.body;
       final jsonData = json.decode(jsonString);
+      debugPrint(jsonData.toString());
       setState(() {
         ciaData = jsonData;
       });
@@ -92,7 +91,7 @@ class _CIADataPageState extends State<CIADataPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(20.0),
               child: Text(
                 'Name :- ${ciaData["CIA_1"]["NAME"]} \nEnrollment :- ${widget.enrollmentNumber} \nSemester :- ${widget.type}',
                 style: const TextStyle(
@@ -108,7 +107,7 @@ class _CIADataPageState extends State<CIADataPage> {
                 child: ciaData.isEmpty
                     ? const CircularProgressIndicator()
                     : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.vertical,
                         child: DataTable(
                           columns: const [
                             DataColumn(label: Text('Subject')),
