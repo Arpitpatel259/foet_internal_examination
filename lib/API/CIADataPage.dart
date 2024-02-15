@@ -92,20 +92,22 @@ class _CIADataPageState extends State<CIADataPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text(
-                'Name :- ${ciaData["CIA_1"]["NAME"]} \nEnrollment :- ${widget.enrollmentNumber} \nSemester :- ${widget.type}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: ciaData.isNotEmpty
+                  ? Text(
+                      'Name :- ${ciaData["CIA_1"]["NAME"]} \nEnrollment :- ${widget.enrollmentNumber} \nSemester :- ${widget.type}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Container(),
             ),
             Expanded(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: ciaData.isEmpty
-                    ? const CircularProgressIndicator()
+                    ? Center(child: CircularProgressIndicator())
                     : SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: DataTable(
@@ -150,4 +152,11 @@ class _CIADataPageState extends State<CIADataPage> {
       ),
     );
   }
+/*List<DataRow> createRow(ciaData){
+    for(var subject in ciaData){
+      subject
+    }
+    ciaData.forEach((){})
+    return ;
+  }*/
 }
