@@ -18,6 +18,8 @@ class _MemberPageState extends State<MemberPage> {
 
   String type = "none";
 
+  List<Map<String, dynamic>> data = [];
+
   var enrollmentController = TextEditingController();
   var enrollment = "";
   var semester = "";
@@ -153,23 +155,14 @@ class _MemberPageState extends State<MemberPage> {
 
   // Widget to display data in a DataTable
   Widget _buildDataTable() {
-    final Map<String, dynamic> data =
-        responseData.isNotEmpty ? jsonDecode(responseData.toString()) : {};
-
     return ListView.builder(
       itemCount: data.length,
       itemBuilder: (context, index) {
-        final key = data.keys.elementAt(index);
-        final value = data[key];
-
+        final item = data[index];
         return ListTile(
-          title: Text(key),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: value.entries.map((entry) {
-              return Text('${entry.key}: ${entry.value}');
-            }).toList(),
-          ),
+          title: Text('Name: ${item['NAME']}'),
+          subtitle: Text('Enrollment No: ${item['ENRL NO']}'),
+          trailing: Text('Year: ${item['year']}'),
         );
       },
     );
@@ -192,9 +185,11 @@ class _MemberPageState extends State<MemberPage> {
                     type.isNotEmpty &&
                     type != "none") {
                   // If form is valid, fetch data
-                  fetchDataWithBody(enrollmentController.text.toUpperCase(), type.toUpperCase());
-                  debugPrint("Enrollment --------- " + enrollmentController.text);
-                  debugPrint("sem ---------------- " + type);
+                  fetchData(enrollmentController.text.toUpperCase().toString(),
+                      type.toUpperCase().toString());
+                  debugPrint(
+                      "Enrollment --------- ${enrollmentController.text}");
+                  debugPrint("sem ---------------- $type");
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -372,37 +367,25 @@ class _MemberPageState extends State<MemberPage> {
   }
 
   // Method to fetch data from the API
-  Future<void> fetchDataWithBody(String enrollment, String semester) async {
-    final url = Uri.parse('https://ciaapp.pythonanywhere.com/get_data');
+  fetchData(String EN_NO, String SEM) async {
+    final url =
+        Uri.parse('https://ciaapp.pythonanywhere.com/get_data/$EN_NO/$SEM');
+    debugPrint(url.toString());
     try {
-      final response = await http.get(
-        Uri.parse('$url?EN_NO=$enrollment&SEM=$semester'),
-      );
+      final response = await http.get(url);
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonData = json.decode(response.body);
+        final jsonData = json.decode(response.body);
         setState(() {
-          responseData = json.encode(jsonData);
-          debugPrint("Enrollment ---==" + responseData.toString());
+          data = jsonData.values.toList();
         });
       } else {
         // Handle non-200 status code
-        debugPrint('Failed to fetch data: ${response.statusCode}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to load data: ${response.reasonPhrase}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        print('Failed to fetch data: ${response.statusCode}');
+        print('Response body: ${response.body}');
       }
     } catch (e) {
       // Handle network errors
-      debugPrint('Error fetching data: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error fetching data: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      print('Error fetching data: $e');
     }
   }
 }
