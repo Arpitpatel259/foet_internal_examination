@@ -1,10 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foet_internal_examination/API/CIADataPage.dart';
 import 'package:foet_internal_examination/validation.dart';
 import '../constants.dart';
-import 'package:http/http.dart' as http;
 
 class MemberPage extends StatefulWidget {
   const MemberPage({super.key});
@@ -153,21 +152,6 @@ class _MemberPageState extends State<MemberPage> {
     );
   }
 
-  // Widget to display data in a DataTable
-  Widget _buildDataTable() {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        final item = data[index];
-        return ListTile(
-          title: Text('Name: ${item['NAME']}'),
-          subtitle: Text('Enrollment No: ${item['ENRL NO']}'),
-          trailing: Text('Year: ${item['year']}'),
-        );
-      },
-    );
-  }
-
   // Get and Clear Button in one ROW
   Widget _buildActionButtons() {
     return Row(
@@ -185,8 +169,15 @@ class _MemberPageState extends State<MemberPage> {
                     type.isNotEmpty &&
                     type != "none") {
                   // If form is valid, fetch data
-                  fetchData(enrollmentController.text.toUpperCase().toString(),
-                      type.toUpperCase().toString());
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CIADataPage(
+                        enrollmentController.text.toString(),
+                        type.toString(),
+                      ),
+                    ),
+                  );
                   debugPrint(
                       "Enrollment --------- ${enrollmentController.text}");
                   debugPrint("sem ---------------- $type");
@@ -302,7 +293,7 @@ class _MemberPageState extends State<MemberPage> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.deepPurple,
+                Colors.blue,
                 Colors.blue,
               ],
             ),
@@ -349,7 +340,6 @@ class _MemberPageState extends State<MemberPage> {
                       const SizedBox(height: 20.0),
                       _buildActionButtons(),
                       const SizedBox(height: 20.0),
-                      if (responseData.isNotEmpty) _buildDataTable(),
                     ],
                   ),
                 ),
@@ -364,28 +354,5 @@ class _MemberPageState extends State<MemberPage> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  // Method to fetch data from the API
-  fetchData(String EN_NO, String SEM) async {
-    final url =
-        Uri.parse('https://ciaapp.pythonanywhere.com/get_data/$EN_NO/$SEM');
-    debugPrint(url.toString());
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        setState(() {
-          data = jsonData.values.toList();
-        });
-      } else {
-        // Handle non-200 status code
-        print('Failed to fetch data: ${response.statusCode}');
-        print('Response body: ${response.body}');
-      }
-    } catch (e) {
-      // Handle network errors
-      print('Error fetching data: $e');
-    }
   }
 }
