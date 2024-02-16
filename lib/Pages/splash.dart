@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Container(
             decoration: const BoxDecoration(color: Colors.blueAccent),
           ),
-          const Column(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
@@ -40,23 +40,31 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 50.0,
-                      child: Icon(
-                        Icons.work,
-                        color: Colors.black,
-                        size: 50.0,
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "FOET",
+                              style: TextStyle(
+                                fontSize: 40.0,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2.0,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "\nInternal Examination",
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10.0)),
-                    Text(
-                      "FOET Internal Examination",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0,
-                          color: Colors.black),
-                    )
                   ],
                 ),
               ),
