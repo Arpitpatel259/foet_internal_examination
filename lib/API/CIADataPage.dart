@@ -16,6 +16,7 @@ class CIADataPage extends StatefulWidget {
 
 class _CIADataPageState extends State<CIADataPage> {
   Map<String, dynamic> ciaData = {};
+  List CIA_1_Key = [];
 
   Future<void> fetchData() async {
     final response = await http.get(Uri.parse(
@@ -27,6 +28,7 @@ class _CIADataPageState extends State<CIADataPage> {
       debugPrint(jsonData.toString());
       setState(() {
         ciaData = jsonData;
+        CIA_1_Key = ciaData["CIA_1"].keys.toList();
       });
     } else {
       throw Exception('Failed to load data');
@@ -90,73 +92,56 @@ class _CIADataPageState extends State<CIADataPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ciaData.isNotEmpty
-                  ? Text(
-                      'Name :- ${ciaData["CIA_1"]["NAME"]} \nEnrollment :- ${widget.enrollmentNumber} \nSemester :- ${widget.type}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : Container(),
-            ),
-            Expanded(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: ciaData.isEmpty
-                    ? Center(child: CircularProgressIndicator())
-                    : SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: DataTable(
-                          columns: const [
-                            DataColumn(label: Text('Subject')),
-                            DataColumn(label: Text('CIA 1')),
-                            DataColumn(label: Text('CIA 2')),
-                          ],
-                          rows: [
-                            DataRow(cells: [
-                              DataCell(Text('AJS')),
-                              DataCell(Text('${ciaData["CIA_1"]["AJS"]}')),
-                              DataCell(Text('${ciaData["CIA 2"]["AJS"]}')),
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('DMBI')),
-                              DataCell(Text('${ciaData["CIA_1"]["DMBI"]}')),
-                              DataCell(Text('${ciaData["CIA 2"]["DMBI"]}')),
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('CD')),
-                              DataCell(Text('${ciaData["CIA_1"]["CD"]}')),
-                              DataCell(Text('${ciaData["CIA 2"]["CD"]}')),
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('SEO')),
-                              DataCell(Text('${ciaData["CIA_1"]["SEO"]}')),
-                              DataCell(Text('${ciaData["CIA 2"]["SEO"]}')),
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('WMC')),
-                              DataCell(Text('${ciaData["CIA_1"]["WMC"]}')),
-                              DataCell(Text('${ciaData["CIA 2"]["WMC"]}')),
-                            ]),
-                          ],
-                        ),
-                      ),
-              ),
-            ),
+            ciaData["CIA_1"] != 0
+                ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: ciaData.isNotEmpty
+                        ? Text(
+                            'Name :- ${ciaData["CIA_1"]["NAME"]} \nEnrollment :- ${widget.enrollmentNumber} \nSemester :- ${widget.type}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : Container(),
+                  )
+                : Container(),
+            ciaData["CIA_1"] != 0 || ciaData["CIA_2"] != 0
+                ? Expanded(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: ciaData.isEmpty
+                          ? const Center(child: Text("No Data Found!!"))
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: DataTable(
+                                columns: const [
+                                  DataColumn(label: Text('Subject')),
+                                  DataColumn(label: Text('CIA 1')),
+                                  DataColumn(label: Text('CIA 2')),
+                                ],
+                                rows: [
+                                  for (int i = 3; i < CIA_1_Key.length; i++)
+                                    DataRow(cells: [
+                                      DataCell(Text(CIA_1_Key[i])),
+                                      DataCell(Text(
+                                          '${ciaData["CIA_1"][CIA_1_Key[i]]}')),
+                                      DataCell( ciaData["CIA_2"] != 0 ?
+                                          Text(
+                                          '${ciaData["CIA_2"][CIA_1_Key[i]]}') : const Text("0")),
+                                    ]),
+                                ],
+                              ),
+                            ),
+                    ),
+                  )
+                : const Center(
+                    child: Text("No Data Found"),
+                  )
           ],
         ),
       ),
     );
   }
-/*List<DataRow> createRow(ciaData){
-    for(var subject in ciaData){
-      subject
-    }
-    ciaData.forEach((){})
-    return ;
-  }*/
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foet_internal_examination/API/CIADataPage.dart';
@@ -179,8 +178,7 @@ class _MemberPageState extends State<MemberPage> {
                     ),
                   );
                   debugPrint(
-                      "Enrollment --------- ${enrollmentController.text}");
-                  debugPrint("sem ---------------- $type");
+                      "Enrollment :-- ${enrollmentController.text} and ${type.toString()}");
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
