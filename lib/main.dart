@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Pages/splash.dart';
+import 'Pages/Splash_Screen.dart';
 import 'Pages/MemberPage.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: title,
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: const SplashScreen(),
+        home: const Splash_Screen(),
       );
 }
 
