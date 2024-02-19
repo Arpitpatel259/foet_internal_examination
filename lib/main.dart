@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'Pages/Splash_Screen.dart';
-import 'Pages/MemberPage.dart';
+import 'Student/CIA_DATA.dart';
 
 void main() {
   runApp(const MyApp());

@@ -30,9 +30,11 @@ class _CIADataPageState extends State<CIADataPage> {
         ciaData = jsonData;
         CIA_1_Key = ciaData["CIA_1"].keys.toList();
       });
+
     } else {
       throw Exception('Failed to load data');
     }
+
   }
 
   @override
@@ -106,13 +108,13 @@ class _CIADataPageState extends State<CIADataPage> {
                         : Container(),
                   )
                 : Container(),
-            ciaData["CIA_1"] != "0" || ciaData["CIA_2"] != "0"
+            ciaData["CIA_1"] != 0 || ciaData["CIA_2"] != 0
                 ? Expanded(
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
                       child: ciaData.isEmpty
-                          ? const Center(child: Text("No Data"))
+                          ? const Center(child: CircularProgressIndicator())
                           : SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: DataTable(
@@ -130,7 +132,7 @@ class _CIADataPageState extends State<CIADataPage> {
                                       DataCell(ciaData["CIA_2"] != 0
                                           ? Text(
                                               '${ciaData["CIA_2"][CIA_1_Key[i]]}')
-                                          : const Text("0")),
+                                          : const Text("-")),
                                     ]),
                                 ],
                               ),
@@ -138,7 +140,7 @@ class _CIADataPageState extends State<CIADataPage> {
                     ),
                   )
                 : const Center(
-                    child: Text("No Data Found"),
+                    child: Text("No Data Found!!"),
                   )
           ],
         ),

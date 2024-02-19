@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import '../main.dart';
+import 'package:foet_internal_examination/Pages/Welcome_Screen.dart';
 
 class Splash_Screen extends StatefulWidget {
   const Splash_Screen({super.key});
@@ -20,7 +19,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
       const Duration(seconds: 4),
       () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MainPage()),
+        MaterialPageRoute(builder: (context) => Welcome()),
       ),
     );
   }
