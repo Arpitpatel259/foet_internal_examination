@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:foet_internal_examination/Pages/Welcome_Screen.dart';
+import 'package:foet_internal_examination/Pages/Dashboard.dart';
 
 class Splash_Screen extends StatefulWidget {
   const Splash_Screen({super.key});
@@ -16,10 +16,10 @@ class _Splash_ScreenState extends State<Splash_Screen> {
     super.initState();
     // After 3 seconds, navigate to main.dart
     Timer(
-      const Duration(seconds: 4),
+      const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Welcome()),
+        MaterialPageRoute(builder: (context) => const Dashboard()),
       ),
     );
   }
@@ -38,8 +38,8 @@ class _Splash_ScreenState extends State<Splash_Screen> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                height: 120,
-                width: 120,
+                height: 170,
+                width: 170,
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
@@ -55,9 +55,10 @@ class _Splash_ScreenState extends State<Splash_Screen> {
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.fade,
                     style: TextStyle(
+                      fontFamily: 'Schyler',
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
-                      fontSize: 15,
+                      fontSize: 35,
                       color: Color(0xffffffff),
                     ),
                   ),
@@ -70,7 +71,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontStyle: FontStyle.normal,
-                  fontSize: 14,
+                  fontSize: 25,
                   color: Color(0xffffffff),
                 ),
               ),

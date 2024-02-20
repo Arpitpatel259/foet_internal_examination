@@ -28,7 +28,11 @@ class _CIA_MarksState extends State<CIA_Marks> {
       debugPrint(jsonData.toString());
       setState(() {
         ciaData = jsonData;
-        CIA_1_Key = ciaData["CIA_1"].keys.toList();
+        if (ciaData.containsKey("CIA_1")) {
+          CIA_1_Key = ciaData["CIA_1"].keys.toList();
+        } else {
+          CIA_1_Key = [0];
+        }
       });
     } else {
       throw Exception('Failed to load data');
@@ -47,18 +51,18 @@ class _CIA_MarksState extends State<CIA_Marks> {
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         elevation: 4,
-        centerTitle: false,
+        centerTitle: true,
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff191bd2),
+        backgroundColor: const Color(0xff3a57e8),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),
         title: const Text(
           "CIA Exam Marks",
           style: TextStyle(
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w700,
             fontStyle: FontStyle.normal,
-            fontSize: 14,
+            fontSize: 20,
             color: Color(0xffffffff),
           ),
         ),
@@ -160,7 +164,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Container(
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
@@ -204,22 +208,22 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                   color: Color(0xffffffff),
                                 ),
                               ),
-                              Text(
-                                "Branch :- ${widget.enrollmentNumber}",
+                              const Text(
+                                "Branch :- B.Tech (Information Technology)",
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.clip,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontStyle: FontStyle.normal,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xffffffff),
                                 ),
                               ),
-                              Text(
-                                "Batch :- ${widget.enrollmentNumber}",
+                              const Text(
+                                "Batch :- 2020-2024",
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.clip,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontStyle: FontStyle.normal,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -239,7 +243,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                               ),
                             ]
                           : [
-                              Center(
+                              const Center(
                                 child: Text("No Data Found !!"),
                               )
                             ],
@@ -248,21 +252,26 @@ class _CIA_MarksState extends State<CIA_Marks> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Container(
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color: Color(0xFFC7B27D),
+                    color: const Color(0xFFC7B27D),
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-                    border: Border.all(color: Color(0x4d9e9e9e), width: 1),
+                    border:
+                        Border.all(color: const Color(0x4d9e9e9e), width: 1),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: ciaData["CIA_1"] != null
-                        ? SizedBox(
+                    child: (CIA_1_Key.toString() == "0" &&
+                            (ciaData["CIA_1"] == null || ciaData.isEmpty))
+                        ? const Center(
+                            child: Text("No Data Found !!"),
+                          )
+                        : SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: ciaData.isEmpty
                                 ? const Center(
@@ -342,8 +351,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                       ],
                                     ),
                                   ),
-                          )
-                        : Container(),
+                          ),
                   ),
                 ),
               )

@@ -102,7 +102,7 @@ class _MemberPageState extends State<MemberPage> {
                 items: const [
                   DropdownMenuItem(
                     value: "none",
-                    child: Text("Select option"),
+                    child: Text("Select Semester"),
                   ),
                   DropdownMenuItem(
                     value: "1ST",
@@ -264,7 +264,7 @@ class _MemberPageState extends State<MemberPage> {
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
         elevation: 4,
-        centerTitle: false,
+        centerTitle: true,
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xff3a57e8),
         shape: const RoundedRectangleBorder(
@@ -273,11 +273,11 @@ class _MemberPageState extends State<MemberPage> {
         title: const Text(
           "FOET - CIA",
           style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontStyle: FontStyle.normal,
-            fontSize: 14,
-            color: Color(0xffffffff),
-          ),
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+          fontSize: 20,
+          color: Color(0xffffffff),
+        ),
         ),
         leading: GestureDetector(
           onTap: () {
@@ -331,7 +331,7 @@ class _MemberPageState extends State<MemberPage> {
                             padding: EdgeInsets.all(8),
                             child: Image(
                               image: AssetImage("assets/images/AULOGO.png"),
-                              width: 100,
+                              width: 150,
                               fit: BoxFit.fitWidth,
                             ),
                           ),

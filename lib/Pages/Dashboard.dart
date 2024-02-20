@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foet_internal_examination/Pages/Welcome_Screen.dart';
 import 'package:foet_internal_examination/Student/CIA_DATA.dart';
 
 class Dashboard extends StatefulWidget {
@@ -33,10 +32,10 @@ class _DashboardState extends State<Dashboard> {
         ),
         leading: GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            //Navigator.pop(context);
           },
           child: const Icon(
-            Icons.arrow_back,
+            Icons.home,
             color: Color(0xffffffff),
             size: 24,
           ),
@@ -49,7 +48,7 @@ class _DashboardState extends State<Dashboard> {
           mainAxisSize: MainAxisSize.max,
           children: [
             GridView(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               physics: const ClampingScrollPhysics(),
@@ -65,12 +64,12 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MemberPage()));
+                              builder: (context) => const MemberPage()));
                     },
                     child: Card(
-                      margin: EdgeInsets.all(0),
-                      color: Color(0xffffffff),
-                      shadowColor: Color(0xff000000),
+                      margin: const EdgeInsets.all(0),
+                      color: const Color(0xffffffff),
+                      shadowColor: const Color(0xff000000),
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
@@ -82,13 +81,13 @@ class _DashboardState extends State<Dashboard> {
                         children: [
                           Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.all(0),
-                            padding: EdgeInsets.all(12),
+                            margin: const EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Color(0x2d3a57e8),
+                              color: const Color(0x2d3a57e8),
                               shape: BoxShape.circle,
                               border: Border.all(
-                                  color: Color(0x4d9e9e9e), width: 1),
+                                  color: const Color(0x4d9e9e9e), width: 1),
                             ),
                             child: const Icon(
                               Icons.all_inclusive,
