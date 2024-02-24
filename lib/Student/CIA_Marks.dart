@@ -17,22 +17,28 @@ class CIA_Marks extends StatefulWidget {
 class _CIA_MarksState extends State<CIA_Marks> {
   Map<String, dynamic> ciaData = {};
   List CIA_1_Key = [];
+  bool isLoading = false;
 
   Future<void> fetchData() async {
+    isLoading = true;
     final response = await http.get(Uri.parse(
         'https://ciaapp.pythonanywhere.com/get_data/${widget.enrollmentNumber}/${widget.type}'));
 
     if (response.statusCode == 200) {
       final jsonString = response.body;
       final jsonData = json.decode(jsonString);
-      debugPrint(jsonData.toString());
+      //debugPrint(jsonData.toString());
       setState(() {
         ciaData = jsonData;
+        //debugPrint("CIA-DATA -- "+ciaData.toString());
         if (ciaData.containsKey("CIA_1")) {
           CIA_1_Key = ciaData["CIA_1"].keys.toList();
+          debugPrint("IF NULL " + CIA_1_Key.toString());
         } else {
           CIA_1_Key = [0];
+          debugPrint("IF NULL " + CIA_1_Key.toString());
         }
+        isLoading = false;
       });
     } else {
       throw Exception('Failed to load data');
@@ -192,7 +198,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                 overflow: TextOverflow.clip,
                                 style: const TextStyle(
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xffffffff),
                                 ),
@@ -203,7 +209,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                 overflow: TextOverflow.clip,
                                 style: const TextStyle(
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xffffffff),
                                 ),
@@ -214,7 +220,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xffffffff),
                                 ),
@@ -225,7 +231,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xffffffff),
                                 ),
@@ -236,7 +242,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                 overflow: TextOverflow.clip,
                                 style: const TextStyle(
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xffffffff),
                                 ),
@@ -266,92 +272,86 @@ class _CIA_MarksState extends State<CIA_Marks> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: (CIA_1_Key.toString() == "0" &&
-                            (ciaData["CIA_1"] == null || ciaData.isEmpty))
-                        ? const Center(
-                            child: Text("No Data Found !!"),
-                          )
-                        : SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: ciaData.isEmpty
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: DataTable(
-                                      columns: const [
-                                        DataColumn(
-                                            label: Text(
-                                          'Subject',
-                                          style: TextStyle(
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff000000),
-                                          ),
-                                        )),
-                                        DataColumn(
-                                            label: Text(
-                                          'CIA 1',
-                                          style: TextStyle(
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff000000),
-                                          ),
-                                        )),
-                                        DataColumn(
-                                            label: Text(
-                                          'CIA 2',
-                                          style: TextStyle(
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff000000),
-                                          ),
-                                        )),
-                                      ],
-                                      rows: [
-                                        for (int i = 3;
-                                            i < CIA_1_Key.length;
-                                            i++)
-                                          DataRow(cells: [
-                                            DataCell(Text(
-                                              CIA_1_Key[i],
-                                              style: const TextStyle(
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xffffffff),
-                                              ),
-                                            )),
-                                            DataCell(Text(
-                                              '${ciaData["CIA_1"][CIA_1_Key[i]]}',
-                                              style: const TextStyle(
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xffffffff),
-                                              ),
-                                            )),
-                                            DataCell(ciaData["CIA_2"] != 0
-                                                ? Text(
-                                                    '${ciaData["CIA_2"][CIA_1_Key[i]]}',
-                                                    style: const TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Color(0xffffffff),
-                                                    ),
-                                                  )
-                                                : const Text("-")),
-                                          ]),
-                                      ],
-                                    ),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : CIA_1_Key == [0]
+                              ? const Center(
+                                  child: Text("No Data Found Here!"),
+                                )
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: DataTable(
+                                    columns: const [
+                                      DataColumn(
+                                          label: Text(
+                                        'Subject',
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff000000),
+                                        ),
+                                      )),
+                                      DataColumn(
+                                          label: Text(
+                                        'CIA 1',
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff000000),
+                                        ),
+                                      )),
+                                      DataColumn(
+                                          label: Text(
+                                        'CIA 2',
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff000000),
+                                        ),
+                                      )),
+                                    ],
+                                    rows: [
+                                      for (int i = 3; i < CIA_1_Key.length; i++)
+                                        DataRow(cells: [
+                                          DataCell(Text(
+                                            CIA_1_Key[i],
+                                            style: const TextStyle(
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xffffffff),
+                                            ),
+                                          )),
+                                          DataCell(Text(
+                                            '${ciaData["CIA_1"][CIA_1_Key[i]]}',
+                                            style: const TextStyle(
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xffffffff),
+                                            ),
+                                          )),
+                                          DataCell(ciaData["CIA_2"] != 0
+                                              ? Text(
+                                                  '${ciaData["CIA_2"][CIA_1_Key[i]]}',
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xffffffff),
+                                                  ),
+                                                )
+                                              : const Text("-")),
+                                        ]),
+                                    ],
                                   ),
-                          ),
+                                ),
+                    ),
                   ),
                 ),
               )
