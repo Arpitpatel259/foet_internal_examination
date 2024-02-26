@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,36 +20,39 @@ class _CIA_MarksState extends State<CIA_Marks> {
   List CIA_1_Key = [];
   bool isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
   Future<void> fetchData() async {
     isLoading = true;
     final response = await http.get(Uri.parse(
         'https://ciaapp.pythonanywhere.com/get_data/${widget.enrollmentNumber}/${widget.type}'));
 
     if (response.statusCode == 200) {
-      final jsonString = response.body;
-      final jsonData = json.decode(jsonString);
-      //debugPrint(jsonData.toString());
+      final body = response.body;
+
+      debugPrint(json.toString());
+
       setState(() {
-        ciaData = jsonData;
-        //debugPrint("CIA-DATA -- "+ciaData.toString());
-        if (ciaData.containsKey("CIA_1")) {
+        ciaData = jsonDecode(body);
+        debugPrint("CIA-DATA -- " + ciaData["CIA_1"].toString());
+
+        if (ciaData["CIA_1"] != 0) {
+          isLoading = false;
           CIA_1_Key = ciaData["CIA_1"].keys.toList();
-          debugPrint("IF NULL " + CIA_1_Key.toString());
+          debugPrint("IF PART " + CIA_1_Key.toString());
         } else {
+          isLoading = false;
           CIA_1_Key = [0];
-          debugPrint("IF NULL " + CIA_1_Key.toString());
+          debugPrint("ELSE PART " + CIA_1_Key.toString());
         }
-        isLoading = false;
       });
     } else {
       throw Exception('Failed to load data');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
   }
 
   @override
@@ -190,69 +194,71 @@ class _CIA_MarksState extends State<CIA_Marks> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       // Use min to allow the Column to take the minimum height needed
-                      children: ciaData["CIA_1"] != null && ciaData.isNotEmpty
-                          ? [
-                              Text(
-                                'Name :- ${ciaData["CIA_1"]["NAME"]}',
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.clip,
-                                style: const TextStyle(
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
-                              Text(
-                                "Enrollment :- ${widget.enrollmentNumber}",
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.clip,
-                                style: const TextStyle(
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
-                              const Text(
-                                "Branch :- B.Tech (Information Technology)",
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
-                              const Text(
-                                "Batch :- 2020-2024",
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
-                              Text(
-                                "Semester :- ${widget.type}",
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.clip,
-                                style: const TextStyle(
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
-                            ]
-                          : [
-                              const Center(
-                                child: Text("No Data Found !!"),
-                              )
-                            ],
+                      children: isLoading
+                          ? [const Center(child: CircularProgressIndicator())]
+                          : ciaData["CIA_1"] != 0
+                              ? [
+                                  Text(
+                                    'Name :- ${ciaData["CIA_1"]["NAME"]}',
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.clip,
+                                    style: const TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xffffffff),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Enrollment :- ${widget.enrollmentNumber}",
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.clip,
+                                    style: const TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xffffffff),
+                                    ),
+                                  ),
+                                  const Text(
+                                    "Branch :- B.Tech (Information Technology)",
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xffffffff),
+                                    ),
+                                  ),
+                                  const Text(
+                                    "Batch :- 2020-2024",
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xffffffff),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Semester :- ${widget.type}",
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.clip,
+                                    style: const TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xffffffff),
+                                    ),
+                                  ),
+                                ]
+                              : [
+                                  const Center(
+                                    child: Text("No Data Found !!"),
+                                  )
+                                ],
                     ),
                   ),
                 ),
@@ -276,7 +282,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                       width: MediaQuery.of(context).size.width,
                       child: isLoading
                           ? const Center(child: CircularProgressIndicator())
-                          : CIA_1_Key == [0]
+                          : ciaData["CIA_1"] == 0
                               ? const Center(
                                   child: Text("No Data Found Here!"),
                                 )
