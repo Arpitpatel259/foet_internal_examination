@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors_in_immutables, avoid_unnecessary_containers
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +16,7 @@ class CIA_Marks extends StatefulWidget {
 
 class _CIA_MarksState extends State<CIA_Marks> {
   Map<String, dynamic> ciaData = {};
-  List CIA_1_Key = [];
+  List cia1Key = [];
   bool isLoading = false;
 
   @override
@@ -38,16 +37,16 @@ class _CIA_MarksState extends State<CIA_Marks> {
 
       setState(() {
         ciaData = jsonDecode(body);
-        debugPrint("CIA-DATA -- " + ciaData["CIA_1"].toString());
+        debugPrint("CIA-DATA -- ${ciaData["CIA_1"]}");
 
         if (ciaData["CIA_1"] != 0) {
           isLoading = false;
-          CIA_1_Key = ciaData["CIA_1"].keys.toList();
-          debugPrint("IF PART " + CIA_1_Key.toString());
+          cia1Key = ciaData["CIA_1"].keys.toList();
+          debugPrint("IF PART $cia1Key");
         } else {
           isLoading = false;
-          CIA_1_Key = [0];
-          debugPrint("ELSE PART " + CIA_1_Key.toString());
+          cia1Key = [0];
+          debugPrint("ELSE PART $cia1Key");
         }
       });
     } else {
@@ -100,7 +99,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -108,15 +107,28 @@ class _CIA_MarksState extends State<CIA_Marks> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Image(
-                        image: AssetImage("assets/images/AULOGO.png"),
-                        width: 100,
-                        fit: BoxFit.fitWidth,
+                      padding: const EdgeInsets.all(8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: const Image(
+                          image: AssetImage("assets/images/AUL.png"),
+                          width: 150,
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -255,9 +267,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                   ),
                                 ]
                               : [
-                                  const Center(
-                                    child: Text("No Data Found !!"),
-                                  )
+                                  Container()
                                 ],
                     ),
                   ),
@@ -284,7 +294,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                           ? const Center(child: CircularProgressIndicator())
                           : ciaData["CIA_1"] == 0
                               ? const Center(
-                                  child: Text("No Data Found Here!"),
+                                  child: Text("No Data Found !!"),
                                 )
                               : SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
@@ -322,10 +332,10 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                       )),
                                     ],
                                     rows: [
-                                      for (int i = 3; i < CIA_1_Key.length; i++)
+                                      for (int i = 3; i < cia1Key.length; i++)
                                         DataRow(cells: [
                                           DataCell(Text(
-                                            CIA_1_Key[i],
+                                            cia1Key[i],
                                             style: const TextStyle(
                                               fontStyle: FontStyle.normal,
                                               fontSize: 18,
@@ -334,7 +344,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                             ),
                                           )),
                                           DataCell(Text(
-                                            '${ciaData["CIA_1"][CIA_1_Key[i]]}',
+                                            '${ciaData["CIA_1"][cia1Key[i]]}',
                                             style: const TextStyle(
                                               fontStyle: FontStyle.normal,
                                               fontSize: 15,
@@ -344,7 +354,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                           )),
                                           DataCell(ciaData["CIA_2"] != 0
                                               ? Text(
-                                                  '${ciaData["CIA_2"][CIA_1_Key[i]]}',
+                                                  '${ciaData["CIA_2"][cia1Key[i]]}',
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.normal,
                                                     fontSize: 15,

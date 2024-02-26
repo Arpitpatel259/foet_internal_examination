@@ -54,7 +54,7 @@ class _splashScreenState extends State<splashScreen> {
                     ),
                   ],
                 ),
-                child: Image.asset("assets/images/AU.png", fit: BoxFit.cover),
+                child: Image.asset("assets/images/AUL.png", fit: BoxFit.cover),
               ),
               const Expanded(
                 flex: 0,

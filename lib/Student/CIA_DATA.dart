@@ -190,7 +190,7 @@ class _MemberPageState extends State<MemberPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: const Text(
-                        "Please Enter Perfect Value",
+                        "Please Select Semester",
                       ),
                       backgroundColor: Colors.teal,
                       behavior: SnackBarBehavior.floating,
@@ -320,7 +320,7 @@ class _MemberPageState extends State<MemberPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
@@ -329,14 +329,27 @@ class _MemberPageState extends State<MemberPage> {
                           flex: 1,
                           child: Padding(
                             padding: EdgeInsets.all(8),
-                            child: Image(
-                              image: AssetImage("assets/images/AULOGO.png"),
-                              width: 150,
-                              fit: BoxFit.fitWidth,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                                child: const Image(
+                                  image: AssetImage("assets/images/AUL.png"),
+                                  width: 150,
+                                  fit: BoxFit.fitWidth,
+                                ),
                             ),
                           ),
                         ),
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.all(10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
