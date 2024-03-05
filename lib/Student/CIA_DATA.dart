@@ -281,7 +281,7 @@ class _MemberPageState extends State<MemberPage> {
         ),
         leading: GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.pop(
                 context, MaterialPageRoute(builder: (context) => Dashboard()));
           },
           child: const Icon(
@@ -305,10 +305,10 @@ class _MemberPageState extends State<MemberPage> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.white12,
-                      Colors.white12,
-                      Colors.white12,
-                      Colors.white12,
+                      Colors.white,
+                      Colors.white,
+                      Colors.white,
+                      Colors.white,
                     ],
                     stops: [0.1, 0.4, 0.6, 0.9],
                   ),
@@ -328,7 +328,7 @@ class _MemberPageState extends State<MemberPage> {
                         Expanded(
                           flex: 1,
                           child: Padding(
-                            padding: EdgeInsets.all(8),
+                            padding:const EdgeInsets.all(12),
                             child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -343,14 +343,13 @@ class _MemberPageState extends State<MemberPage> {
                               ),
                                 child: const Image(
                                   image: AssetImage("assets/images/AUL.png"),
-                                  width: 150,
                                   fit: BoxFit.fitWidth,
                                 ),
                             ),
                           ),
                         ),
                         const Padding(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(8),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -363,7 +362,7 @@ class _MemberPageState extends State<MemberPage> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w800,
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 25,
+                                  fontSize: 23,
                                   color: Color(0xff000000),
                                 ),
                               ),
@@ -374,7 +373,7 @@ class _MemberPageState extends State<MemberPage> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   color: Color(0xff000000),
                                 ),
                               ),
@@ -385,7 +384,7 @@ class _MemberPageState extends State<MemberPage> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   color: Color(0xff000000),
                                 ),
                               ),
@@ -393,6 +392,18 @@ class _MemberPageState extends State<MemberPage> {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    const Center(
+                      child: Text(
+                        "Fill Up Details",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 20,
+                          color: Color(0xff000000),
+                        ),
+                      ),
                     ),
                     _buildForm(),
                     const SizedBox(height: 20.0),

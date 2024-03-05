@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CIA_Marks extends StatefulWidget {
   final String enrollmentNumber;
@@ -25,6 +26,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
     fetchData();
   }
 
+  /*Fetch Student CIA 1 and 2 Data*/
   Future<void> fetchData() async {
     isLoading = true;
     final response = await http.get(Uri.parse(
@@ -107,7 +109,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(12),
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -116,20 +118,20 @@ class _CIA_MarksState extends State<CIA_Marks> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset: const Offset(0, 3), // changes position of shadow
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
                             ),
                           ],
                         ),
                         child: const Image(
                           image: AssetImage("assets/images/AUL.png"),
-                          width: 150,
                           fit: BoxFit.fitWidth,
                         ),
                       ),
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -142,7 +144,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
                             fontStyle: FontStyle.normal,
-                            fontSize: 25,
+                            fontSize: 23,
                             color: Color(0xff000000),
                           ),
                         ),
@@ -153,7 +155,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontStyle: FontStyle.normal,
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Color(0xff000000),
                           ),
                         ),
@@ -164,7 +166,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Color(0xff000000),
                           ),
                         ),
@@ -266,9 +268,7 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                     ),
                                   ),
                                 ]
-                              : [
-                                  Container()
-                                ],
+                              : [Container()],
                     ),
                   ),
                 ),
@@ -370,11 +370,17 @@ class _CIA_MarksState extends State<CIA_Marks> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  
 }
