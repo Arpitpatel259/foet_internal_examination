@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CIA_Marks extends StatefulWidget {
   final String enrollmentNumber;
@@ -58,6 +57,28 @@ class _CIA_MarksState extends State<CIA_Marks> {
 
   @override
   Widget build(BuildContext context) {
+    num totalCiaMarks1 = 0;
+    num totalCiaMarks2 = 0;
+
+    // Calculate the sum of CIA marks for each subject
+    for (int i = 3; i < cia1Key.length; i++) {
+      // Check if CIA_1 and CIA_2 data is available and not null
+      if (ciaData["CIA_1"][cia1Key[i]] != null) {
+        if (ciaData["CIA_1"][cia1Key[i]] == "AB") {
+          totalCiaMarks1 += 0;
+        } else {
+          totalCiaMarks1 += ciaData["CIA_1"][cia1Key[i]];
+        }
+      }
+      if (ciaData["CIA_2"][cia1Key[i]] != null) {
+        if (ciaData["CIA_2"][cia1Key[i]] == "AB") {
+          totalCiaMarks2 += 0;
+        } else {
+          totalCiaMarks2 += ciaData["CIA_2"][cia1Key[i]];
+        }
+      }
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
@@ -364,6 +385,45 @@ class _CIA_MarksState extends State<CIA_Marks> {
                                                 )
                                               : const Text("-")),
                                         ]),
+                                      DataRow(cells: [
+                                        const DataCell(Text(
+                                          'Total',
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xffff0000),
+                                          ),
+                                        )),
+                                        DataCell(Text(
+                                          '$totalCiaMarks1',
+                                          style: const TextStyle(
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xffff0000),
+                                          ),
+                                        )),
+                                        DataCell(ciaData["CIA_2"] != 0
+                                            ? Text(
+                                                '$totalCiaMarks2',
+                                                style: const TextStyle(
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xffff0000),
+                                                ),
+                                              )
+                                            : const Text(
+                                                "-",
+                                                style: TextStyle(
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xffff0000),
+                                                ),
+                                              )),
+                                      ]),
                                     ],
                                   ),
                                 ),
@@ -382,5 +442,4 @@ class _CIA_MarksState extends State<CIA_Marks> {
   void dispose() {
     super.dispose();
   }
-  
 }
